@@ -6,7 +6,7 @@ with open('README.rst') as fd:
 
 setup(
     name='jailconf',
-    version='0.2.0',
+    version='0.2.1',
     packages=['jailconf'],
     install_requires = ['ply>=3.9'],
     python_requires='>=3.0',
@@ -29,5 +29,5 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Topic :: System :: Systems Administration',
         'Topic :: Software Development :: Libraries :: Python Modules',
-    ]  
+    ]
 )

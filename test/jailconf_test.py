@@ -52,13 +52,13 @@ bar {
     persist;
 }
 """
- 
+
     def test1(self):
         self.assertEqual(
             loads(self.jail_conf_in).dumps(indentation = '    '),
             self.jail_conf_out
         )
-    
+
     def test2(self):
         jail_conf = loads(self.jail_conf_in)
         jail_conf['myjail'] = JailBlock([('ip4.addr', '192.168.1.10')])
@@ -86,4 +86,23 @@ myjail {
 }
 """
         self.assertEqual(jail_conf.dumps(indentation = '    '), expected_output)
-        
+
+    def test3(self):
+        # ipv6 addr
+        jail_conf = loads(self.jail_conf_in)
+        jail_conf['foo']['ip6.addr'] = 'fd55:3048::2:2'
+        # deletion of a jail
+        del jail_conf['bar']
+        expected_output = """\
+exec.start = "/bin/sh /etc/rc";
+exec.stop = "/bin/sh /etc/rc.shutdown";
+exec.clean;
+mount.devfs;
+path = "/var/jail/$name";
+foo {
+    host.hostname = "example.com";
+    ip4.addr = 10.1.1.1, 10.1.1.2, 10.1.1.3, 10.1.1.4;
+    ip6.addr = fd55:3048::2:2;
+}
+"""
+        self.assertEqual(jail_conf.dumps(indentation = '    '), expected_output)
